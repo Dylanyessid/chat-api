@@ -1,0 +1,20 @@
+import express from 'express'
+import cors from 'cors'
+import envs from './infrastructure/config/envs'
+import { MongoConnection } from './infrastructure/config/MongoConnection'
+import morgan from 'morgan'
+import { appRouter } from './infrastructure/http/routes'
+
+const app = express()
+
+
+app.use(morgan('dev'))
+app.use(express.json())
+app.use(cors())
+app.use('/api/v1', appRouter)
+
+
+app.listen(envs.port, async() => {
+    await MongoConnection.connect()
+    console.log(`Server is running on port ${envs.port}`)
+})
