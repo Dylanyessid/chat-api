@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
 import envs from './envs'
+import { IMongoConnection } from '../../application/config/IMongoConnection'
 
-export class MongoConnection {
+export class MongoConnection implements IMongoConnection {
 
-    static async connect() {
+    async connect() {
         try {
             await mongoose.connect(envs.mongoUri)
             console.log('MongoDB connected')

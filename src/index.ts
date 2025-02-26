@@ -15,6 +15,7 @@ app.use('/api/v1', appRouter)
 
 
 app.listen(envs.port, async() => {
-    await MongoConnection.connect()
+    const mongoConnection = new MongoConnection()
+    await mongoConnection.connect()
     console.log(`Server is running on port ${envs.port}`)
 })
