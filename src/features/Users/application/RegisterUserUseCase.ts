@@ -1,7 +1,7 @@
 import { IPasswordHashing } from "../../../application/security/IPasswordHashing"
-import { User } from "../domain/User"
 
-import { IUserRepository } from "../types/IUserRepository"
+import { IUserRepository } from "../domain/IUserRepository"
+import { User } from "../domain/User"
 
 
 export class RegisterUseCase {
@@ -12,10 +12,10 @@ export class RegisterUseCase {
 
     async execute(user: User) {
         try {
+            const hashedPassword = await this.passwordHasher.hashPassword(user.password!)
+            user.password = hashedPassword
             const newUser = await this.userRepository.create(user)
-            const hashedPassword = await this.passwordHasher.hashPassword(user.password)
             if(!newUser) return null
-            newUser.password = hashedPassword
             return newUser
         } catch (error) {
             return null

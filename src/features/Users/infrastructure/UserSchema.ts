@@ -1,8 +1,15 @@
-import e from "express";
+
 import mongoose, { Schema } from "mongoose";
 
-const UserSchema = new Schema({
-    name:{
+export interface IUserDocument {
+    username: string,
+    email: string,
+    password: string,
+    deletedAt: Date | null
+}
+
+const UserSchema = new Schema<IUserDocument>({
+    username:{
         type: String,
         required: true
     },
