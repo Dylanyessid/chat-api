@@ -10,6 +10,7 @@ import { registerDependencies } from './infrastructure/di/register'
 
 const app = express()
 
+
 registerDependencies()
 app.use(morgan('dev'))
 app.use(express.json())
