@@ -15,10 +15,13 @@ export const registerDependencies = () =>{
     const getUserByCriteria = new GetUserByCriteriaUseCase(userRepository)
 
 
-
+    //Utilites
     container.register('ApiResponseFormatter', new ApiResponseFormatter())
-    container.register('UserRepository', userRepository)
     container.register('PasswordHasher', passwordHasher)
+
+    //Repositories
+    container.register('UserRepository', userRepository)
+    
 
     //UseCases
     container.register('RegisterUseCase', registerUseCase)

@@ -32,45 +32,6 @@ export class UserRepository implements IUserRepository{
         }
     }
 
-    async getMany() {
-        try {
-            const users = await UserModel.find({deletedAt: null}).lean()
-            if(!users) return null
-            const convertedUsers = users.map((user:IUserDocument)=> {
-                const {username,email,password} = user
-                const validatedUser = User.create(username, email, password)
-                return validatedUser
-            }).filter((user)=> user !== null)
-            return convertedUsers
-        }
-        catch (error) {
-            return null
-        }
-    }
-
-    async update (email: string, user: User) {
-        try {
-            const updatedUser = await UserModel.findOneAndUpdate({email:email, deletedAt: null}, {username: user.username, email: user.getEmail(), password: user.password}, {new: true})
-            if(!updatedUser) return null
-            const {username, password} = updatedUser
-            const validatedUser = User.create(username, email, password)
-            return validatedUser
-           
-        } catch (error) {
-            return null
-        }
-    }
-
-    async delete(email: string) {
-        try {
-            const deletedUser = await UserModel.findOne({email:email, deletedAt: null})
-            if(!deletedUser) return null
-            deletedUser.deletedAt = new Date()
-            await deletedUser.save()
-            const validatedUser = User.create(deletedUser.username, email, deletedUser.password)
-            return validatedUser
-        } catch (error) {
-            return null
-        }
-    }
+   
+    
 }
