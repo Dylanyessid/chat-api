@@ -1,18 +1,28 @@
+
+
+
 export class User {
-    constructor(public username:string, private email: string, public password?: string) {
-        this.email = email;
-        this.password = password;
-        this.username = username;
+    private constructor(public username:string, private email: string, public password: string) {}
+
+    private static validateEmail(email:string):boolean{
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     }
 
-    getEmail() {
-        return this.email;
-    }
-
-    setEmail(email: string) {
-        if(email.includes('@')) {
-            this.email = email;
+    static create(username:string, email: string, password: string):User | null{
+        
+        if(!this.validateEmail(email)){
+            throw new Error('Invalid email')
         }
+        return (new User(username,email,password)) // 
+
     }
+
+    getEmail(){
+        return this.email
+    }
+
+   
+   
 
 }

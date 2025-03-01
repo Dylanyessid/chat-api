@@ -7,24 +7,25 @@ export class UserRepository implements IUserRepository{
 
 
     async create(user: User) {
-
         try {
             const userModel = new UserModel()
             userModel.username = user.username
             userModel.email = user.getEmail()
             userModel.password = user.password!
             await userModel.save()
-            return new User(userModel.username, userModel.email, userModel.password);
-        } catch (error) {
+            return user
+        } catch (error:any) {
             return null
         }
     }
   
     async getOne(email: string) {
         try {
-            const user = await UserModel.findOne({email:email, deletedAt: null})
-            if(!user) return null
-            return new User(user.username, user.email, user.password)
+            const existingUser = await UserModel.findOne({email:email, deletedAt: null})
+            if(!existingUser) return null
+            const {username, password} = existingUser
+            const validatedUser = User.create(username, email, password)
+            return validatedUser
         }
         catch (error) {
             return null
@@ -35,7 +36,12 @@ export class UserRepository implements IUserRepository{
         try {
             const users = await UserModel.find({deletedAt: null}).lean()
             if(!users) return null
-            return users.map((user:IUserDocument)=> new User(user.username, user.email, user.password))
+            const convertedUsers = users.map((user:IUserDocument)=> {
+                const {username,email,password} = user
+                const validatedUser = User.create(username, email, password)
+                return validatedUser
+            }).filter((user)=> user !== null)
+            return convertedUsers
         }
         catch (error) {
             return null
@@ -46,7 +52,10 @@ export class UserRepository implements IUserRepository{
         try {
             const updatedUser = await UserModel.findOneAndUpdate({email:email, deletedAt: null}, {username: user.username, email: user.getEmail(), password: user.password}, {new: true})
             if(!updatedUser) return null
-            return new User(updatedUser.username, updatedUser.email) //  updatedUser
+            const {username, password} = updatedUser
+            const validatedUser = User.create(username, email, password)
+            return validatedUser
+           
         } catch (error) {
             return null
         }
@@ -57,8 +66,9 @@ export class UserRepository implements IUserRepository{
             const deletedUser = await UserModel.findOne({email:email, deletedAt: null})
             if(!deletedUser) return null
             deletedUser.deletedAt = new Date()
-            await deletedUser?.save()
-            return new User(deletedUser.username, deletedUser.email)
+            await deletedUser.save()
+            const validatedUser = User.create(deletedUser.username, email, deletedUser.password)
+            return validatedUser
         } catch (error) {
             return null
         }

@@ -3,6 +3,7 @@ import { User } from "../../domain/User";
 import { IUserRepository } from "../../domain/IUserRepository";
 import { RegisterUseCase } from "../../application/RegisterUserUseCase";
 import { ApiResponseFormatter } from './../../../../infrastructure/formatters/ApiResponseFormatter';
+import { CreateUserDTO } from "../dto/CreateUserDTO";
 
 export class UserController{
 
@@ -15,13 +16,12 @@ export class UserController{
     }
 
     async create(req: Request, res: Response, next:NextFunction) {
-        const user = new User(req.body.username, req.body.email, req.body.password)
-        const createdUser = await this._registerUseCase.execute(user)
+        
+        const createdUser = await this._registerUseCase.execute(req.body as CreateUserDTO)
         if(!createdUser) {
-             const response = this._apiResponseFormatter.error('Error creating user', 400)
+             const response = this._apiResponseFormatter.error('Invalid data for register a user', 400)
              res.status(400).json(response)
-             return 
-             
+             return  
         }
 
         const response = this._apiResponseFormatter.success(createdUser, 'User created successfully', 201)

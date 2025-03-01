@@ -6,13 +6,17 @@ import { RegisterUseCase } from "../../application/RegisterUserUseCase";
 import { PasswordHasher } from "../../../../infrastructure/security/hashing";
 import { container } from "../../../../infrastructure/di/container";
 
+import { CreateUserDTO } from "../dto/CreateUserDTO";
+import { validateDTO } from "../../../../infrastructure/middlewares/validateDTO";
+
 const UserRouter = Router()
 
 
 const userController = container.resolve<UserController>('UserController')
 
 
-UserRouter.post('/',userController.create.bind(userController))
+UserRouter.post('/', validateDTO(CreateUserDTO, container.resolve('ApiResponseFormatter')) ,userController.create.bind(userController))
+UserRouter.get('/:id', ()=>{})
 
 
 export {UserRouter}
