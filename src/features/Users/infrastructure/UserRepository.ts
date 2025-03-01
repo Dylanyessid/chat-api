@@ -19,11 +19,11 @@ export class UserRepository implements IUserRepository{
         }
     }
   
-    async getOne(email: string) {
+    async getOne(criteria: object) {
         try {
-            const existingUser = await UserModel.findOne({email:email, deletedAt: null})
+            const existingUser = await UserModel.findOne({...criteria, deletedAt: null})
             if(!existingUser) return null
-            const {username, password} = existingUser
+            const {username, email,password} = existingUser
             const validatedUser = User.create(username, email, password)
             return validatedUser
         }
