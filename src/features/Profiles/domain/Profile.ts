@@ -1,32 +1,17 @@
 export class Profile {
    
-    constructor( private user:string, private fullName:string, private photo:string,private bio:string){
-        this.user = user
-        this.fullName = fullName
-        this.photo = photo
-        this.bio = bio
+    private constructor( public user:string,  public fullName:string,  public photo?:string, public bio?:string){
+    
     }
 
-    getUser(){
-        return this.user
+
+    static create(user:string,  fullName:string,  photo?:string, bio?:string){
+
+        if(!user) return null
+        if(!fullName) return null
+        
+        return new Profile(user, fullName, photo, bio)
     }
-    getFullName(){
-        return this.fullName
-    }
-    setFullName(fullName:string){
-        this.fullName = fullName
-    }
-    getPhoto(){
-        return this.photo
-    }
-    setPhoto(photo:string){
-        this.photo = photo
-    }
-    getBio(){
-        return this.bio
-    }
-    setBio(bio:string){
-        this.bio = bio
-    }
+
 
 }

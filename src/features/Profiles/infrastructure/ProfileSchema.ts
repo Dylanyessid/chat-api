@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2"
 
-interface IProfileDocument {
+interface IProfileDocument extends mongoose.Document{
     fullName: string,
     bio: string,
     photo: string,
@@ -22,5 +23,8 @@ const ProfileSchema = new Schema<IProfileDocument>({
     deletedAt: { type: Date, default: null }
 })
 
- const UserModel = mongoose.model('Profile', ProfileSchema);
- export default UserModel
+ ProfileSchema.plugin(mongoosePaginate)
+
+ 
+ const ProfileModel = mongoose.model<IProfileDocument, mongoose.PaginateModel<IProfileDocument>>('Profile', ProfileSchema);
+ export default ProfileModel

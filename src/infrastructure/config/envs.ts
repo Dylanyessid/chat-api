@@ -9,6 +9,9 @@ const envs:IEnvs = {
     port: +process.env.PORT! || 3000,
     mongoUri: process.env.MONGO_URI || '',
     jwtSecret: process.env.JWT_SECRET || '',
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    cloudApiKey: process.env.CLOUDINARY_API_KEY,
+    cloudApiSecret:process.env.CLOUDINARY_API_SECRET
 
 }
 
