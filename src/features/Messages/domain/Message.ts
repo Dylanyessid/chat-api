@@ -4,7 +4,7 @@ class Message{
 
     }
 
-    create(chat:string, sender:string ,type:string, content:string,  createdAt?:Date){
+    static create(chat:string, sender:string ,type:string, content:string,  createdAt?:Date){
         return new Message(chat, sender, type, content, createdAt)
     }
 }

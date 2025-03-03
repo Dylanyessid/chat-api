@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class CreateChatDTO {
+export class CreateMessageDTO {
 
     @IsString()
     @IsNotEmpty()
@@ -9,6 +9,10 @@ export class CreateChatDTO {
     @IsString()
     @IsNotEmpty()
     type:string
+
+    @IsString()
+    @IsNotEmpty()
+    sender:string
 
     @IsString()
     @IsNotEmpty()
