@@ -32,6 +32,15 @@ export class UserRepository implements IUserRepository{
         }
     }
 
+    async count(ids: string[]){
+        try {
+            const count = await UserModel.countDocuments({_id:{ $in: ids }})
+            return count
+        } catch (error) {
+            return null
+        }
+    }
+
    
     
 }
