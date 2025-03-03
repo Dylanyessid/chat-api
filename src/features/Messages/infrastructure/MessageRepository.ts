@@ -5,16 +5,19 @@ import MessageModel from "./MessageSchema";
 
 class MessageRepository implements IMessageRepository{
 
-    create(message: Message): Promise<Message | null> {
+    async create(message: Message): Promise<Message | null> {
         try {
             const newMessage = new MessageModel()
             newMessage.sender =  new mongoose.Types.ObjectId(message.sender) 
             newMessage.type = message.type
             newMessage.content = message.content
-            if(!mongoose.Types.ObjectId.isValid(message.chat)) return null
             newMessage.chat = new mongoose.Types.ObjectId(message.chat)
+            const messageSaved = await newMessage.save()
+            message.createdAt = messageSaved.createdAt
+            return message
+
         } catch (error) {
-            
+            return null
         }
     }
     async delete(id: string) {
