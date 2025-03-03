@@ -5,6 +5,7 @@ import { CreateProfileDTO } from "../dto/CreateProfileDTO";
 import { container } from "../../../../infrastructure/di/container";
 import { IApiResponseFormatter } from "../../../../infrastructure/formatters/IApiResponseFormatter";
 import { ProfileController } from "./Profile.controller";
+import { UpdateProfileDataDTO } from "../dto/UpdateProfileDataDTO";
 
 
 const profileRouter = Router()
@@ -18,8 +19,11 @@ profileRouter.post('/',
 
 profileRouter.patch('/photo/:id', 
     upload.single('photo'),
-    //validateDTO(CreateProfileDTO, "body", formatter),
     profileController.updatePhoto.bind(profileController)
 )
 
+profileRouter.patch('/:id', 
+    validateDTO(UpdateProfileDataDTO, "body", formatter),
+    profileController.updateProfileData.bind(profileController)
+)
 export {profileRouter}
