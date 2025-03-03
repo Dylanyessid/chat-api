@@ -2,11 +2,12 @@ import mongoose, { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2"
 
 interface IMessageSchema extends mongoose.Document{
-    chat:mongoose.Schema.Types.ObjectId
-    sender:mongoose.Schema.Types.ObjectId
+    chat:mongoose.Types.ObjectId
+    sender:mongoose.Types.ObjectId
     type: string,
     content: string,
     createdAt: Date | null
+    deletedAt: Date | null
 }
 
 const MessageSchema = new Schema<IMessageSchema>({
@@ -29,7 +30,8 @@ const MessageSchema = new Schema<IMessageSchema>({
         required: true
         
     },
-    createdAt: { type: Date, default: Date.now() }
+    createdAt: { type: Date, default: Date.now() },
+    deletedAt: { type: Date, default: null }
 })
 
 MessageSchema.plugin(mongoosePaginate)

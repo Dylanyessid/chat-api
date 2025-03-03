@@ -1,6 +1,8 @@
 import CreateChatUseCase from "../../features/Chat/application/CreateChatUseCase"
 import ChatRepository from "../../features/Chat/infrastructure/ChatRepository"
 import ChatController from "../../features/Chat/infrastructure/http/Chat.controller"
+import CreateMessageUseCase from "../../features/Messages/application/CreateMessageUseCase"
+import MessageRepository from "../../features/Messages/infrastructure/MessageRepository"
 import CreateProfileUseCase from "../../features/Profiles/application/CreateProfileUseCase"
 import { UpdatePhotoUseCase } from "../../features/Profiles/application/UpdatePhotoUseCase"
 import UpdateProfileDataUseCase from "../../features/Profiles/application/UpdateProfileDataUseCase"
@@ -13,6 +15,7 @@ import { UserRepository } from "../../features/Users/infrastructure/UserReposito
 import { ApiResponseFormatter } from "../formatters/ApiResponseFormatter"
 import { PasswordHasher } from "../security/hashing"
 import { container } from "./container"
+import MessageController from './../../features/Messages/infrastructure/http/Message.controller';
 
 export const registerDependencies = () =>{
 
@@ -32,6 +35,8 @@ export const registerDependencies = () =>{
     container.register('UserRepository', userRepository)
     container.register('ProfileRepository', profileRepository)
     container.register('ChatRepository', new ChatRepository())
+    container.register('MessageRepository', new MessageRepository( ))
+
 
     //UseCases
     container.register('RegisterUseCase', registerUseCase)
@@ -39,7 +44,10 @@ export const registerDependencies = () =>{
     container.register('CreateProfileUseCase', new CreateProfileUseCase(profileRepository))
     container.register('UpdatePhotoUseCase', new UpdatePhotoUseCase(profileRepository))
     container.register('UpdateProfileDataUseCase', new UpdateProfileDataUseCase(profileRepository))
-    
+    container.register('CreateMessageUseCase', new CreateMessageUseCase(
+        container.resolve('MessageRepository')
+    ))
+
     container.register('CreateChatUseCase', new CreateChatUseCase(
         container.resolve('ChatRepository'),
         container.resolve('UserRepository') 
@@ -66,6 +74,10 @@ export const registerDependencies = () =>{
         container.resolve('ApiResponseFormatter')
     ))
 
+    container.register('MessageController', new MessageController(
+        container.resolve('CreateMessageUseCase'),
+        container.resolve('ApiResponseFormatter')
+    ))
 }
 
 registerDependencies()
