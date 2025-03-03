@@ -1,4 +1,4 @@
-import { Chat } from "../domain/Chat";
+import  Chat  from "../domain/Chat";
 import { IChatReposiory } from "../domain/IChatRepository";
 import ChatModel from './ChatSchema';
 

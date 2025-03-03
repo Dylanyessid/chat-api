@@ -1,10 +1,10 @@
-export class Chat{
+class Chat{
 
     private constructor(public participants: string[]){
 
     }
 
-    create(participants:string[]){
+    static create(participants:string[]){
         if(!participants) return null
         return new Chat(participants)
     }
@@ -13,3 +13,5 @@ export class Chat{
         return participants.length > 0
     }
 }
+
+export default Chat
