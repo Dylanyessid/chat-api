@@ -12,6 +12,7 @@ const MessageSchema = new Schema<IMessageSchema>({
         type: String,
         required: true
     },
+    senderId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
     content:{
         type: String,
         required: true

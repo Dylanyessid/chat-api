@@ -1,11 +1,11 @@
 class Message{
 
-    private constructor(public type:string, public content:string, public createdAt:Date){
+    private constructor(public sender:string,public type:string,  public content:string, public createdAt:Date){
 
     }
 
-    create(type:string,  content:string,  createdAt:Date){
-        return new Message(type, content, createdAt)
+    create(type:string, sender:string,  content:string,  createdAt:Date){
+        return new Message(sender, type, content, createdAt)
     }
 }
 
