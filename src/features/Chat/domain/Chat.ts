@@ -1,12 +1,12 @@
 export class Chat{
 
-    private constructor(public participants: string[], public createdAt:Date){
+    private constructor(public participants: string[]){
 
     }
 
-    create(participants:string[], createdAt:Date){
+    create(participants:string[]){
         if(!participants) return null
-        return new Chat(participants,createdAt)
+        return new Chat(participants)
     }
 
     private validateParticipants(participants:string[]){
