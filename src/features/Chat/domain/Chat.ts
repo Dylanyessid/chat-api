@@ -5,11 +5,11 @@ class Chat{
     }
 
     static create(participants:string[]){
-        if(!participants) return null
+        if(!this.validateParticipants(participants)) return null
         return new Chat(participants)
     }
 
-    private validateParticipants(participants:string[]){
+    private static validateParticipants(participants:string[]){
         return participants.length > 0
     }
 }

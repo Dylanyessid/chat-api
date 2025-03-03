@@ -1,3 +1,6 @@
+import CreateChatUseCase from "../../features/Chat/application/CreateChatUseCase"
+import ChatRepository from "../../features/Chat/infrastructure/ChatRepository"
+import ChatController from "../../features/Chat/infrastructure/http/Chat.controller"
 import CreateProfileUseCase from "../../features/Profiles/application/CreateProfileUseCase"
 import { UpdatePhotoUseCase } from "../../features/Profiles/application/UpdatePhotoUseCase"
 import UpdateProfileDataUseCase from "../../features/Profiles/application/UpdateProfileDataUseCase"
@@ -28,7 +31,7 @@ export const registerDependencies = () =>{
     //Repositories
     container.register('UserRepository', userRepository)
     container.register('ProfileRepository', profileRepository)
-    
+    container.register('ChatRepository', new ChatRepository())
 
     //UseCases
     container.register('RegisterUseCase', registerUseCase)
@@ -36,6 +39,13 @@ export const registerDependencies = () =>{
     container.register('CreateProfileUseCase', new CreateProfileUseCase(profileRepository))
     container.register('UpdatePhotoUseCase', new UpdatePhotoUseCase(profileRepository))
     container.register('UpdateProfileDataUseCase', new UpdateProfileDataUseCase(profileRepository))
+    
+    container.register('CreateChatUseCase', new CreateChatUseCase(
+        container.resolve('ChatRepository'),
+        container.resolve('UserRepository') 
+    ))
+    
+    
     //Controllers
     container.register('UserController', new UserController(
         registerUseCase,
@@ -49,6 +59,11 @@ export const registerDependencies = () =>{
         container.resolve('UpdateProfileDataUseCase'),
         container.resolve('ApiResponseFormatter')
         
+    ))
+
+    container.register('ChatController', new ChatController(
+        container.resolve('CreateChatUseCase'),
+        container.resolve('ApiResponseFormatter')
     ))
 
 }
