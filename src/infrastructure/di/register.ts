@@ -9,7 +9,7 @@ import UpdateProfileDataUseCase from "../../features/Profiles/application/Update
 import { ProfileController } from "../../features/Profiles/infrastructure/http/Profile.controller"
 import { ProfileRepository } from "../../features/Profiles/infrastructure/ProfileRepository"
 import { GetUserByCriteriaUseCase } from "../../features/Users/application/GetUserByCriteriaUseCase"
-import { RegisterUseCase } from "../../features/Users/application/RegisterUserUseCase"
+import { RegisterUseCase } from "../../features/Auth/application/RegisterUserUseCase"
 import { UserController } from "../../features/Users/infrastructure/http/User.controller"
 import { UserRepository } from "../../features/Users/infrastructure/UserRepository"
 import { ApiResponseFormatter } from "../formatters/ApiResponseFormatter"
@@ -72,7 +72,6 @@ export const registerDependencies = () =>{
 
     //User
     container.register('UserController', new UserController(
-        registerUseCase,
         getUserByCriteria,
         container.resolve('ApiResponseFormatter')
     ))
@@ -102,6 +101,7 @@ export const registerDependencies = () =>{
 
     //Auth
     container.register('AuthController', new AuthController(
+         container.resolve('RegisterUseCase'),
          container.resolve('LoginUseCase'),
          container.resolve('ApiResponseFormatter')
     ))

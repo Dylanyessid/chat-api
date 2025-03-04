@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { UserController } from "./User.controller";
 import { container } from "../../../../infrastructure/di/container";
-import { CreateUserDTO } from "../dto/CreateUserDTO";
+import { CreateUserDTO } from "../../../Auth/infrastructure/dto/CreateUserDTO";
 import { validateDTO } from "../../../../infrastructure/middlewares/validateDTO";
 import { GetUserByIDDTO } from "../dto/GetUserByIdDTO";
 import { IApiResponseFormatter } from "../../../../infrastructure/formatters/IApiResponseFormatter";
@@ -12,10 +12,6 @@ const formatter =  container.resolve<IApiResponseFormatter>('ApiResponseFormatte
 const userController = container.resolve<UserController>('UserController')
 
 
-UserRouter.post('/',
-    validateDTO(CreateUserDTO,"body",formatter),
-    userController.create.bind(userController)
-)
 
 UserRouter.get('/:id', 
     validateDTO(GetUserByIDDTO, "params", formatter), 

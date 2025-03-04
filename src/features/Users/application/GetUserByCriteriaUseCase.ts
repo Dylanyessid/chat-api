@@ -1,5 +1,5 @@
 import { IUserRepository } from "../domain/IUserRepository"
-import { CreateUserDTO } from "../infrastructure/dto/CreateUserDTO"
+import { CreateUserDTO } from "../../Auth/infrastructure/dto/CreateUserDTO"
 
 export class GetUserByCriteriaUseCase {
     constructor(

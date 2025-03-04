@@ -1,7 +1,7 @@
 import { IPasswordHashing } from "../../../application/security/IPasswordHashing"
 
-import { IUserRepository } from "../domain/IUserRepository"
-import { User } from "../domain/User"
+import { IUserRepository } from "../../Users/domain/IUserRepository"
+import { User } from "../../Users/domain/User"
 import { CreateUserDTO } from "../infrastructure/dto/CreateUserDTO"
 
 
