@@ -15,11 +15,7 @@ app.use(cors())
 
 
 app.use('/api/v1', appRouter)
-// Middleware para monitorear memoria cada 30 segundos
-setInterval(() => {
-    const memoryUsage = process.memoryUsage();
-    console.log(`[MEMORY USAGE] RSS: ${(memoryUsage.rss / 1024 / 1024).toFixed(2)} MB | Heap Used: ${(memoryUsage.heapUsed / 1024 / 1024).toFixed(2)} MB`);
-}, 30000);
+
 app.listen(envs.port, async() => {
     const mongoConnection = new MongoConnection()
     await mongoConnection.connect()

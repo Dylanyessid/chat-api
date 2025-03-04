@@ -10,7 +10,7 @@ class ChatController {
        const result = await this.createChatUseCase.execute(req.body)
        if (!result) {
         const response = this.apiResponseFormatter.error("Invalid user(s)", 404);
-        res.status(500).json(response);
+        res.status(404).json(response);
         return;
       }
       const response = this.apiResponseFormatter.success(

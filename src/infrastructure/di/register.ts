@@ -17,6 +17,9 @@ import { PasswordHasher } from "../security/hashing"
 import { container } from "./container"
 import MessageController from './../../features/Messages/infrastructure/http/Message.controller';
 import GetMessagesUseCase from "../../features/Messages/application/GetMessagesUseCase"
+import AuthController from "../../features/Auth/infrastructure/http/Login.controller"
+import LoginUseCase from "../../features/Auth/application/LoginUseCase"
+import { JwtService } from "../security/jwt"
 
 export const registerDependencies = () =>{
 
@@ -31,6 +34,7 @@ export const registerDependencies = () =>{
     //Utilites
     container.register('ApiResponseFormatter', new ApiResponseFormatter())
     container.register('PasswordHasher', passwordHasher)
+    container.register('JwtService', new JwtService())
 
     //Repositories
     container.register('UserRepository', userRepository)
@@ -58,7 +62,11 @@ export const registerDependencies = () =>{
         container.resolve('UserRepository') 
     ))
     
-    
+    container.register('LoginUseCase', new LoginUseCase(
+        container.resolve('UserRepository'),
+        container.resolve('PasswordHasher'),
+        container.resolve('JwtService')
+    ))
     //----Controllers-----
 
 
@@ -90,6 +98,12 @@ export const registerDependencies = () =>{
         container.resolve('GetMessagesUseCase'),
         container.resolve('ApiResponseFormatter'),
 
+    ))
+
+    //Auth
+    container.register('AuthController', new AuthController(
+         container.resolve('LoginUseCase'),
+         container.resolve('ApiResponseFormatter')
     ))
 }
 

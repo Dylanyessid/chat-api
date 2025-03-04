@@ -4,11 +4,13 @@ import { LoginDTO } from "../dto/LoginDTO";
 import { container } from "../../../../infrastructure/di/container";
 import { ApiResponseFormatter } from './../../../../infrastructure/formatters/ApiResponseFormatter';
 import { IApiResponseFormatter } from "../../../../infrastructure/formatters/IApiResponseFormatter";
+import AuthController from "./Login.controller";
 
-const loginRouter = Router()
+const authRouter = Router()
 
 const formatter = container.resolve<IApiResponseFormatter>('ApiResponseFormatter')
-const controller = container.resolve()
-loginRouter.post('/login', validateDTO(LoginDTO, "body", formatter) )
+const controller = container.resolve<AuthController>('AuthController')
 
-export {loginRouter}
+authRouter.post('/login', validateDTO(LoginDTO, "body", formatter), controller.login.bind(controller) )
+
+export {authRouter}
