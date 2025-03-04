@@ -16,6 +16,7 @@ import { ApiResponseFormatter } from "../formatters/ApiResponseFormatter"
 import { PasswordHasher } from "../security/hashing"
 import { container } from "./container"
 import MessageController from './../../features/Messages/infrastructure/http/Message.controller';
+import GetMessagesUseCase from "../../features/Messages/application/GetMessagesUseCase"
 
 export const registerDependencies = () =>{
 
@@ -47,6 +48,10 @@ export const registerDependencies = () =>{
     container.register('CreateMessageUseCase', new CreateMessageUseCase(
         container.resolve('MessageRepository')
     ))
+    container.register('GetMessagesUseCase', new GetMessagesUseCase(
+        container.resolve('MessageRepository')
+    ))
+
 
     container.register('CreateChatUseCase', new CreateChatUseCase(
         container.resolve('ChatRepository'),
@@ -54,13 +59,17 @@ export const registerDependencies = () =>{
     ))
     
     
-    //Controllers
+    //----Controllers-----
+
+
+    //User
     container.register('UserController', new UserController(
         registerUseCase,
         getUserByCriteria,
         container.resolve('ApiResponseFormatter')
     ))
 
+    //Profile
     container.register('ProfileController', new ProfileController(
         container.resolve('CreateProfileUseCase'),
         container.resolve('UpdatePhotoUseCase'),
@@ -69,14 +78,18 @@ export const registerDependencies = () =>{
         
     ))
 
+    //Chat
     container.register('ChatController', new ChatController(
         container.resolve('CreateChatUseCase'),
         container.resolve('ApiResponseFormatter')
     ))
 
+    //Message
     container.register('MessageController', new MessageController(
         container.resolve('CreateMessageUseCase'),
-        container.resolve('ApiResponseFormatter')
+        container.resolve('GetMessagesUseCase'),
+        container.resolve('ApiResponseFormatter'),
+
     ))
 }
 

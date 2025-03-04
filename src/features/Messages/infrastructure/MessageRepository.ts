@@ -20,6 +20,37 @@ class MessageRepository implements IMessageRepository{
             return null
         }
     }
+
+    async countChatMessaes(chat:string){
+        try {
+            const total = await MessageModel.countDocuments({chat:new mongoose.Types.ObjectId(chat)})
+            return total
+        } catch (error) {
+            return null
+        }
+       
+    }
+    async getMessages(page: number, limit: number, chat:string): Promise<Message[] | null> {
+        try {
+            
+            const skip = (page - 1) * limit
+            const messages = await MessageModel.find({
+                chat: new mongoose.Types.ObjectId(chat)
+            })
+            .sort({ _id:-1 })
+            .skip(skip)
+            .limit(limit)
+            .lean()
+            .exec()
+
+            
+           
+            return messages.map((message)=> Message.create(message.chat.toString(), message.sender.toString(), message.type, message.content, message.createdAt))
+
+        } catch (error) {
+            return null
+        }
+    }
     async delete(id: string) {
         try {
             const message = await MessageModel.findByIdAndUpdate(id, {
