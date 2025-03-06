@@ -13,7 +13,7 @@ export class UserRepository implements IUserRepository{
     async create(user: User) {
         try {
             const userModel = new UserModel()
-            userModel.username = user.username
+           
             userModel.email = user.getEmail()
             userModel.password = user.password!
             await userModel.save()
@@ -27,8 +27,8 @@ export class UserRepository implements IUserRepository{
         try {
             const existingUser = await UserModel.findOne({...criteria, deletedAt: null})
             if(!existingUser) return null
-            const {username, email,password} = existingUser
-            const validatedUser = User.create(username, email, password)
+            const { email,password} = existingUser
+            const validatedUser = User.create( email, password)
             return validatedUser
         }
         catch (error) {
@@ -57,9 +57,9 @@ export class UserRepository implements IUserRepository{
             const userWithProfile = await UserModel.paginate({deletedAt:null, profile:{ $ne:null}},options) as mongoose.PaginateResult<Omit<IUserDocument, "profile"> & {profile:IProfileDocument}>
             
             return userWithProfile.docs.map(document => {
-                const { fullName, photo, bio} =  document.profile
-                const profile = Profile.create(fullName, photo, bio)
-                return User.create(document.username, document.email, "", profile)
+                const { fullName, photo, bio, username} =  document.profile
+                const profile = Profile.create(username   , fullName, photo, bio)
+                return User.create(document.email, "", profile)
             })
 
         } catch (error) {

@@ -5,11 +5,16 @@ export interface IProfileDocument extends mongoose.Document{
     fullName: string,
     bio: string,
     photo: string,
-    
+    username: string,
     deletedAt: Date | null
 }
 
 const ProfileSchema = new Schema<IProfileDocument>({
+    username:{
+        type: String,
+        required: true,
+        unique:true
+    },
     fullName:{
         type: String,
         required: true

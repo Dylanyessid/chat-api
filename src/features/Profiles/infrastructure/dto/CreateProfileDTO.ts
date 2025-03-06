@@ -2,6 +2,11 @@ import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateProfileDTO {
 
+
+    @IsString()
+    @IsNotEmpty()
+    username: string;
+
     @IsString()
     @IsNotEmpty()
     fullName:string

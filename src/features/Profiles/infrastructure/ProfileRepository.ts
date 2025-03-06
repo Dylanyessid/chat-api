@@ -14,7 +14,7 @@ export class ProfileRepository implements IProfileRepository{
             profileModel.bio = profile.bio
             profileModel.fullName = profile.fullName
             profileModel.photo = profile.photo
-           
+            profileModel.username = profile.username
             const profileSaved = await profileModel.save()
             return {profile, id:profileSaved._id.toString()}
         } catch (error) {
@@ -31,7 +31,7 @@ export class ProfileRepository implements IProfileRepository{
         try {
             const profiles = await ProfileModel.paginate({}, options)
             
-            return profiles.docs.map((profile) => Profile.create( profile.fullName, profile.photo, profile.bio))
+            return profiles.docs.map((profile) => Profile.create( profile.username,profile.fullName, profile.photo, profile.bio))
         } catch (error) {
             return null
         }
@@ -40,7 +40,7 @@ export class ProfileRepository implements IProfileRepository{
         try {
             const profile = await ProfileModel.findById(id)
             if(!profile) return null
-            return Profile.create( profile.fullName, profile.photo, profile.bio)
+            return Profile.create(profile.username, profile.fullName, profile.photo, profile.bio)
         } catch (error) {
             return null
         }
@@ -50,7 +50,7 @@ export class ProfileRepository implements IProfileRepository{
         try {
            const profile = await ProfileModel.findByIdAndUpdate(id,data, {new:true}).lean()
            if(!profile) null
-           return Profile.create( profile.fullName, profile.photo, profile.photo)
+           return Profile.create( profile.username, profile.fullName, profile.photo, profile.photo)
         } catch (error) {
             return null
         }

@@ -13,8 +13,8 @@ export class RegisterUseCase {
 
     async execute(createUserDto: CreateUserDTO) {
        
-        const {email,password,username} = createUserDto
-        const user = User.create(username,email,password)
+        const {email,password} = createUserDto
+        const user = User.create(email,password)
 
         const hashedPassword = await this.passwordHasher.hashPassword(user!.password)
         user!.password = hashedPassword

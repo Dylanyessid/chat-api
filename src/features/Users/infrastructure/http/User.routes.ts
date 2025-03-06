@@ -5,12 +5,14 @@ import { CreateUserDTO } from "../../../Auth/infrastructure/dto/CreateUserDTO";
 import { validateDTO } from "../../../../infrastructure/middlewares/validateDTO";
 import { GetUserByIDDTO } from "../dto/GetUserByIdDTO";
 import { IApiResponseFormatter } from "../../../../infrastructure/formatters/IApiResponseFormatter";
+import { authMiddleware } from "../../../../infrastructure/middlewares/jwtValidatorMiddleare";
 
 const UserRouter = Router()
 
 const formatter =  container.resolve<IApiResponseFormatter>('ApiResponseFormatter')
 const userController = container.resolve<UserController>('UserController')
 
+UserRouter.use(authMiddleware)
 
 
 UserRouter.get('/:id', 

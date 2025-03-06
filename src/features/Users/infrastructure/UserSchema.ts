@@ -4,7 +4,7 @@ import  mongoosePaginate  from 'mongoose-paginate-v2';
 import { IProfileDocument } from "../../Profiles/infrastructure/ProfileSchema";
 
 export interface IUserDocument {
-    username: string,
+   
     email: string,
     profile: mongoose.Types.ObjectId | IProfileDocument
     password: string,
@@ -12,10 +12,7 @@ export interface IUserDocument {
 }
 
 const UserSchema = new Schema<IUserDocument>({
-    username:{
-        type: String,
-        required: true
-    },
+   
     email:{
         type: String,
         required: true,

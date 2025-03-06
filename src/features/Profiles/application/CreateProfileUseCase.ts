@@ -14,8 +14,8 @@ class CreateProfileUseCase {
 
         try {
            
-            const {bio,fullName,photo,user} = createProfileDto
-            const profile = await this.profileRepository.create(Profile.create(fullName,photo,bio))
+            const {bio,fullName,photo,username, user} = createProfileDto
+            const profile = await this.profileRepository.create(Profile.create(username, fullName,photo,bio))
             
             if(!profile.id) return null
             const result = await this.userRepository.linkProfile(user, profile.id)
