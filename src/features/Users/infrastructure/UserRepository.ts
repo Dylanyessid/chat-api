@@ -25,10 +25,11 @@ export class UserRepository implements IUserRepository{
   
     async getOne(criteria: object) {
         try {
-            const existingUser = await UserModel.findOne({...criteria, deletedAt: null})
+            const existingUser = await UserModel.findOne({...criteria, deletedAt: null}).populate('profile')
             if(!existingUser) return null
-            const { email,password} = existingUser
-            const validatedUser = User.create( email, password)
+            const { email,password, profile} = existingUser
+            const { username, fullName  } = profile as IProfileDocument
+            const validatedUser = User.create( email, password, Profile.create(username, fullName ))
             return validatedUser
         }
         catch (error) {

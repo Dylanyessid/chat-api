@@ -8,7 +8,7 @@ export class JwtService {
     private secret = "N345346#$%TBIHD"
 
     generateToken(user: User) {
-        return jwt.sign({  email: user.getEmail() }, this.secret, { expiresIn: "1h" });
+        return jwt.sign({  email: user.getEmail(), username:user.profile.username }, this.secret, { expiresIn: "1h" });
     }
     
     verifyToken(token: string) {

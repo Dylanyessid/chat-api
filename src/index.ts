@@ -5,18 +5,16 @@ import envs from './infrastructure/config/envs'
 import { MongoConnection } from './infrastructure/config/MongoConnection'
 import morgan from 'morgan'
 import { appRouter } from './infrastructure/http/routes'
+import { Server } from "socket.io"
+import http from "http"
+import { socketConfig } from './infrastructure/socket/socket'
+import { server } from './infrastructure/http/config'
 
 
-const app = express()
-
-app.use(morgan('dev'))
-app.use(express.json())
-app.use(cors())
+socketConfig(server)
 
 
-app.use('/api/v1', appRouter)
-
-app.listen(envs.port, async() => {
+server.listen(envs.port, async() => {
     const mongoConnection = new MongoConnection()
     await mongoConnection.connect()
     console.log(`Server is running on port ${envs.port}`)
