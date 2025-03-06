@@ -5,7 +5,7 @@ interface IProfileDocument extends mongoose.Document{
     fullName: string,
     bio: string,
     photo: string,
-    user: string,
+    
     deletedAt: Date | null
 }
 
@@ -19,7 +19,7 @@ const ProfileSchema = new Schema<IProfileDocument>({
         
     },
     photo: { type: String },
-    user:{},
+    
     deletedAt: { type: Date, default: null }
 })
 

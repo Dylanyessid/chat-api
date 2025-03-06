@@ -2,10 +2,11 @@ import { uploadImageToCloudinary } from "../../../infrastructure/cloudinary/uplo
 import { IProfileRepository } from "../domain/IProfileRepository";
 import { Profile } from "../domain/Profile";
 import { CreateProfileDTO } from "../infrastructure/dto/CreateProfileDTO";
+import { UserRepository } from './../../Users/infrastructure/UserRepository';
 
 class CreateProfileUseCase {
 
-    constructor(private profileRepository:IProfileRepository){
+    constructor(private profileRepository:IProfileRepository, private userRepository:UserRepository){
 
     }
 
@@ -14,8 +15,11 @@ class CreateProfileUseCase {
         try {
            
             const {bio,fullName,photo,user} = createProfileDto
-            const profile = await this.profileRepository.create(Profile.create(user,fullName,photo,bio))
-            if(!profile) return null
+            const profile = await this.profileRepository.create(Profile.create(fullName,photo,bio))
+            
+            if(!profile.id) return null
+            const result = await this.userRepository.linkProfile(user, profile.id)
+            if(!result) return null
             return profile
            
         } catch (error) {

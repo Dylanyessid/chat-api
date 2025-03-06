@@ -1,7 +1,7 @@
 import { IUserRepository } from "../domain/IUserRepository"
 import { CreateUserDTO } from "../../Auth/infrastructure/dto/CreateUserDTO"
 
-export class GetUserByCriteriaUseCase {
+ class GetUsersByCriteriaUseCase {
     constructor(
         private userRepository: IUserRepository,
       
@@ -16,3 +16,5 @@ export class GetUserByCriteriaUseCase {
        
     }
 }
+
+export default GetUsersByCriteriaUseCase

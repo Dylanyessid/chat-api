@@ -3,7 +3,7 @@ import { Profile } from "./Profile"
 
 
 export interface IProfileRepository {
-    create(profile:Profile): Promise<Profile | null>
+    create(profile:Profile): Promise<{profile:Profile, id:string} | null>
     getOne(id:string):Promise<null | Profile>
     getMany:(page:number, limit:number)=>Promise<null | Profile[]>
     update:(id:string, profile:Profile)=>Promise<null | Profile>

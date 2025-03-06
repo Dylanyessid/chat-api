@@ -31,7 +31,7 @@ class MessageController {
 
     async getMessages(req:Request, res:Response){
 
-      const {chat, limit="30", page} = req.query
+      const {chat, limit="30", page="1"} = req.query
 
       const {count,messages} = await this.getMessagesUseCase.execute(Number(page), Number(limit), chat.toString())
       if (!messages.length) {

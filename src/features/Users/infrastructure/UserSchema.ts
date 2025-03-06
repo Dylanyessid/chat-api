@@ -1,9 +1,11 @@
 
 import mongoose, { Schema } from "mongoose";
+import  mongoosePaginate  from 'mongoose-paginate-v2';
 
 export interface IUserDocument {
     username: string,
     email: string,
+    profile: mongoose.Types.ObjectId
     password: string,
     deletedAt: Date | null
 }
@@ -18,9 +20,16 @@ const UserSchema = new Schema<IUserDocument>({
         required: true,
         unique: true
     },
+    profile:{
+        default:null,
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Profile'
+    },
     password: { type: String, required: true },
     deletedAt: { type: Date, default: null }
 })
 
- const UserModel = mongoose.model('User', UserSchema);
+ UserSchema.plugin(mongoosePaginate)
+
+ const UserModel = mongoose.model<IUserDocument, mongoose.PaginateModel<IUserDocument>>('User', UserSchema);
  export default UserModel

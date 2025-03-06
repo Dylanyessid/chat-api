@@ -8,7 +8,7 @@ import { UpdatePhotoUseCase } from "../../features/Profiles/application/UpdatePh
 import UpdateProfileDataUseCase from "../../features/Profiles/application/UpdateProfileDataUseCase"
 import { ProfileController } from "../../features/Profiles/infrastructure/http/Profile.controller"
 import { ProfileRepository } from "../../features/Profiles/infrastructure/ProfileRepository"
-import { GetUserByCriteriaUseCase } from "../../features/Users/application/GetUserByCriteriaUseCase"
+import GetUsersByCriteriaUseCase  from "../../features/Users/application/GetUserByCriteriaUseCase"
 import { RegisterUseCase } from "../../features/Auth/application/RegisterUserUseCase"
 import { UserController } from "../../features/Users/infrastructure/http/User.controller"
 import { UserRepository } from "../../features/Users/infrastructure/UserRepository"
@@ -28,7 +28,7 @@ export const registerDependencies = () =>{
     const profileRepository = new ProfileRepository()
     const passwordHasher = new PasswordHasher()
     const registerUseCase = new RegisterUseCase(userRepository, passwordHasher)
-    const getUserByCriteria = new GetUserByCriteriaUseCase(userRepository)
+    const getUserByCriteria = new GetUsersByCriteriaUseCase(userRepository)
     
 
     //Utilites
@@ -46,7 +46,7 @@ export const registerDependencies = () =>{
     //UseCases
     container.register('RegisterUseCase', registerUseCase)
     container.register('GetUserByCriteriaUseCase', getUserByCriteria)
-    container.register('CreateProfileUseCase', new CreateProfileUseCase(profileRepository))
+    container.register('CreateProfileUseCase', new CreateProfileUseCase(profileRepository, userRepository))
     container.register('UpdatePhotoUseCase', new UpdatePhotoUseCase(profileRepository))
     container.register('UpdateProfileDataUseCase', new UpdateProfileDataUseCase(profileRepository))
     container.register('CreateMessageUseCase', new CreateMessageUseCase(
@@ -67,12 +67,16 @@ export const registerDependencies = () =>{
         container.resolve('PasswordHasher'),
         container.resolve('JwtService')
     ))
+    container.register('GetUsersByCriteriaUseCase', new GetUsersByCriteriaUseCase(
+        container.resolve('UserRepository'),
+    ))
     //----Controllers-----
 
 
     //User
     container.register('UserController', new UserController(
         getUserByCriteria,
+        container.resolve('GetUsersByCriteriaUseCase'),
         container.resolve('ApiResponseFormatter')
     ))
 
