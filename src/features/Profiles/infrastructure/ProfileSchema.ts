@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2"
 
-interface IProfileDocument extends mongoose.Document{
+export interface IProfileDocument extends mongoose.Document{
     fullName: string,
     bio: string,
     photo: string,

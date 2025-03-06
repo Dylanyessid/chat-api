@@ -4,6 +4,8 @@ import { IUserRepository } from '../domain/IUserRepository';
 import { User } from '../domain/User';
 import UserModel, { IUserDocument } from './UserSchema';
 import { Profile } from '../../Profiles/domain/Profile';
+import mongoose from 'mongoose';
+import { IProfileDocument } from '../../Profiles/infrastructure/ProfileSchema';
 export class UserRepository implements IUserRepository{
 
 
@@ -49,13 +51,15 @@ export class UserRepository implements IUserRepository{
             const options = {
                 page,
                 limit,
-                
+                populate: { path: "profile" },
                 select:"-password"
-            }
-            const userWithProfile = await UserModel.paginate({deletedAt:null, profile:{ $ne:null}},options)
-            //return userWithProfile.docs
+            } 
+            const userWithProfile = await UserModel.paginate({deletedAt:null, profile:{ $ne:null}},options) as mongoose.PaginateResult<Omit<IUserDocument, "profile"> & {profile:IProfileDocument}>
+            
             return userWithProfile.docs.map(document => {
-                return User.create(document.username, document.email, "", document.profile.toString())
+                const { fullName, photo, bio} =  document.profile
+                const profile = Profile.create(fullName, photo, bio)
+                return User.create(document.username, document.email, "", profile)
             })
 
         } catch (error) {

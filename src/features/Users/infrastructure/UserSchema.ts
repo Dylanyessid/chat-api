@@ -1,11 +1,12 @@
 
 import mongoose, { Schema } from "mongoose";
 import  mongoosePaginate  from 'mongoose-paginate-v2';
+import { IProfileDocument } from "../../Profiles/infrastructure/ProfileSchema";
 
 export interface IUserDocument {
     username: string,
     email: string,
-    profile: mongoose.Types.ObjectId
+    profile: mongoose.Types.ObjectId | IProfileDocument
     password: string,
     deletedAt: Date | null
 }
