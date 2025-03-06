@@ -18,6 +18,9 @@ UserRouter.get('/:id',
     userController.getOne.bind(userController)
 )
 
+UserRouter.get('/',
+    userController.getPaginated.bind(userController)
+)
 
 
 export {UserRouter}

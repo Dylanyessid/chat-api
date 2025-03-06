@@ -1,6 +1,6 @@
 import { IUserRepository } from "../domain/IUserRepository";
 
-export class GetUserByPaginationUseCase {
+export class GetUsersByPaginationUseCase {
 
     constructor(private userRepository:IUserRepository){}
 

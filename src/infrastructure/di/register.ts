@@ -20,6 +20,8 @@ import GetMessagesUseCase from "../../features/Messages/application/GetMessagesU
 import AuthController from "../../features/Auth/infrastructure/http/Login.controller"
 import LoginUseCase from "../../features/Auth/application/LoginUseCase"
 import { JwtService } from "../security/jwt"
+import { GetUsersByPaginationUseCase } from "../../features/Users/application/GetUsersByPagination"
+
 
 export const registerDependencies = () =>{
 
@@ -70,13 +72,16 @@ export const registerDependencies = () =>{
     container.register('GetUsersByCriteriaUseCase', new GetUsersByCriteriaUseCase(
         container.resolve('UserRepository'),
     ))
-    //----Controllers-----
 
+    container.register('GetUsersByPaginationUseCase', new GetUsersByPaginationUseCase(userRepository))
+
+
+    //----Controllers-----
 
     //User
     container.register('UserController', new UserController(
         getUserByCriteria,
-        container.resolve('GetUsersByCriteriaUseCase'),
+        container.resolve('GetUsersByPaginationUseCase'),
         container.resolve('ApiResponseFormatter')
     ))
 

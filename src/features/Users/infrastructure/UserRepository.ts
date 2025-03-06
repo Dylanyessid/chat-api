@@ -3,6 +3,7 @@ import { populate } from 'dotenv';
 import { IUserRepository } from '../domain/IUserRepository';
 import { User } from '../domain/User';
 import UserModel, { IUserDocument } from './UserSchema';
+import { Profile } from '../../Profiles/domain/Profile';
 export class UserRepository implements IUserRepository{
 
 
@@ -48,10 +49,15 @@ export class UserRepository implements IUserRepository{
             const options = {
                 page,
                 limit,
-                populate:""
+                
+                select:"-password"
             }
-            const userWithProfile = await UserModel.paginate({deletedAt:null},options)
-            return userWithProfile.docs
+            const userWithProfile = await UserModel.paginate({deletedAt:null, profile:{ $ne:null}},options)
+            //return userWithProfile.docs
+            return userWithProfile.docs.map(document => {
+                return User.create(document.username, document.email, "", document.profile.toString())
+            })
+
         } catch (error) {
             return null
         }

@@ -5,13 +5,13 @@ import { RegisterUseCase } from "../../../Auth/application/RegisterUserUseCase";
 import { ApiResponseFormatter } from "./../../../../infrastructure/formatters/ApiResponseFormatter";
 import { CreateUserDTO } from "../../../Auth/infrastructure/dto/CreateUserDTO";
 import  GetUsersByCriteriaUseCase  from "../../application/GetUserByCriteriaUseCase";
-import { GetUserByPaginationUseCase } from "./../../application/GetUsersByPagination";
+import { GetUsersByPaginationUseCase } from "./../../application/GetUsersByPagination";
 import { formatPaginatedData } from "../../../../infrastructure/formatters/PaginationResponseFormatter";
 
 export class UserController {
   constructor(
     private getUserByCriteriaUserCase: GetUsersByCriteriaUseCase,
-    private getUsersByPaginationUseCase: GetUserByPaginationUseCase,
+    private getUsersByPaginationUseCase: GetUsersByPaginationUseCase,
     private apiResponseFormatter: ApiResponseFormatter
   ) {}
 

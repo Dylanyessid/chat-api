@@ -8,5 +8,5 @@ export interface IUserRepository {
     countUsers():Promise<number>
     linkProfile(user:string, profile:string): Promise<boolean>
     count(ids:string[]):Promise<null| number>
-    getMany(page:number, limit:number) :Promise<any | null>
+    getMany(page:number, limit:number) :Promise<User[] | null>
 }
