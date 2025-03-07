@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2"
 
-interface IMessageSchema extends mongoose.Document{
+export interface IMessageDocument extends mongoose.Document{
     chat:mongoose.Types.ObjectId
     sender:mongoose.Types.ObjectId
     type: string,
@@ -10,7 +10,7 @@ interface IMessageSchema extends mongoose.Document{
     deletedAt: Date | null
 }
 
-const MessageSchema = new Schema<IMessageSchema>({
+const MessageSchema = new Schema<IMessageDocument>({
     chat:{
         type: mongoose.Schema.Types.ObjectId,
         required:true,
@@ -36,5 +36,5 @@ const MessageSchema = new Schema<IMessageSchema>({
 
 MessageSchema.plugin(mongoosePaginate)
 
-const MessageModel = mongoose.model<IMessageSchema, mongoose.PaginateModel<IMessageSchema>>('Message', MessageSchema);
+const MessageModel = mongoose.model<IMessageDocument, mongoose.PaginateModel<IMessageDocument>>('Message', MessageSchema);
 export default MessageModel

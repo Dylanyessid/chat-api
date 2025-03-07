@@ -35,7 +35,7 @@ class MessageController {
 
       const {count,messages} = await this.getMessagesUseCase.execute(Number(page), Number(limit), chat.toString())
       if (!messages.length) {
-       const response = this.apiResponseFormatter.error("Invalid chat message", 404);
+       const response = this.apiResponseFormatter.error("Not found", 404);
        res.status(500).json(response);
        return;
      }
