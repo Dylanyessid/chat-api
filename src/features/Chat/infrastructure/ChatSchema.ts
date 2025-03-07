@@ -1,9 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2"
 import { IMessageDocument } from "../../Messages/infrastructure/MessageSchema";
+import { IUserDocument } from "../../Users/infrastructure/UserSchema";
 
 interface IChatDocument extends mongoose.Document{
-    participants: string[]
+    participants: mongoose.Types.ObjectId[] | IUserDocument[]
     lastMessage: mongoose.Types.ObjectId | IMessageDocument
     createdAt: Date | null
 }
@@ -11,8 +12,9 @@ interface IChatDocument extends mongoose.Document{
 const ChatSchema = new Schema<IChatDocument>({
     participants:[
         {
-            type: String,
-            required: true
+            type: mongoose.Types.ObjectId,
+            required: true,
+            ref:'User'
         },
     ],
     lastMessage:{

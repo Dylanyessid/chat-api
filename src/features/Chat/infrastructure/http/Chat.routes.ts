@@ -17,4 +17,6 @@ chatRouter.post(
 
 chatRouter.get('/', chatController.getChats.bind(chatController))
 
+chatRouter.get('/info', chatController.getChatInfo.bind(chatController))
+
 export {chatRouter}

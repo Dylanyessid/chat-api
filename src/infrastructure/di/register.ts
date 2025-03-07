@@ -23,6 +23,7 @@ import { JwtService } from "../security/jwt"
 import { GetUsersByPaginationUseCase } from "../../features/Users/application/GetUsersByPagination"
 
 import GetChatsUseCase from "../../features/Chat/application/GetChatUseCase"
+import GetChatsInfoUseCase from "../../features/Chat/application/GetChatsInfoUseCase"
 
 
 export const registerDependencies = () =>{
@@ -59,6 +60,7 @@ export const registerDependencies = () =>{
     container.register('GetMessagesUseCase', new GetMessagesUseCase(
         container.resolve('MessageRepository')
     ))
+    
 
 
     container.register('CreateChatUseCase', new CreateChatUseCase(
@@ -67,6 +69,8 @@ export const registerDependencies = () =>{
     ))
     
     container.register('GetChatsUseCase', new GetChatsUseCase(container.resolve("ChatRepository")))
+
+    container.register('GetChatsInfoUseCase', new GetChatsInfoUseCase(container.resolve("ChatRepository")))
 
     container.register('LoginUseCase', new LoginUseCase(
         container.resolve('UserRepository'),
@@ -102,6 +106,7 @@ export const registerDependencies = () =>{
     container.register('ChatController', new ChatController(
         container.resolve('CreateChatUseCase'),
         container.resolve('GetChatsUseCase'),
+        container.resolve('GetChatsInfoUseCase'),
         container.resolve('ApiResponseFormatter'),
     ))
 
