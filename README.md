@@ -32,13 +32,13 @@ This project is a Node.js-based chat API that allows users to send and receive m
 
 ## Technical decisions
 
-TypeScript was used because of its static typing and interfaces, which facilitates the implementation of Clean Architecture. TypeScript helps to detect errors at development time and improves code maintainability.
+TypeScript was used because of its static typing and interfaces, which facilitates the implementation of Clean Architecture. This architecture allows easy testing, high maintainability and high scalability.
 
 MongoDB was chosen for its flexibility and simplicity in building schemas using a JSON-like format.
 
-Multer was used for file upload over HTTP. It is a middleware for Express that handles file upload on the server.
+Multer was used for file upload over HTTP. It is a middleware for Express that handles file upload on the server. Is a very popular middleware in ExpressJS easy to use in a node backend server.
 
-Cloudinary was used to host the files uploaded via Multer. Cloudinary offers a substantial free layer.
+Cloudinary was used to host the files uploaded via Multer. Cloudinary was used because Cloudinary offers a substantial free layer.
 
 Express.js was chosen to create the project architecture from a minimalist approach.
 
