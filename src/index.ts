@@ -1,3 +1,4 @@
+
 import express from 'express'
 import cors from 'cors'
 import "./infrastructure/di/register"
@@ -10,10 +11,10 @@ import http from "http"
 import { socketConfig } from './infrastructure/socket/socket'
 import { server } from './infrastructure/http/config'
 
-
+// Configure socket.io
 socketConfig(server)
 
-
+// Start the server and connect to MongoDB
 server.listen(envs.port, async() => {
     const mongoConnection = new MongoConnection()
     await mongoConnection.connect()

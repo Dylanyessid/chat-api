@@ -5,8 +5,7 @@ import { AuthRequest } from "../http/httpInterfaces";
 
 const jwtService = container.resolve<JwtService>("JwtService")
 
-
-
+// Middleware to validate JWT tokens in the Authorization header
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.header("Authorization"); 
   
@@ -26,4 +25,4 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     (req as AuthRequest).user = decoded; 
     next(); 
     return
-  };
+};

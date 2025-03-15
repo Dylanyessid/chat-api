@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { validate, ValidationError } from 'class-validator';
-import { plainToClass, plainToInstance } from 'class-transformer';
-
+import { plainToInstance } from 'class-transformer';
 import { IApiResponseFormatter } from '../formatters/IApiResponseFormatter';
 import { Location } from '../types/responseMiddleware.types';
 
-export function validateDTO(dtoClass: any, location:string,formatter:IApiResponseFormatter) {
+// Middleware to validate DTOs using class-validator and class-transformer
+export function validateDTO(dtoClass: any, location: string, formatter: IApiResponseFormatter) {
     return (req: Request, res: Response, next: NextFunction) => {
         const dataToValidate = req[location]
         const dtoInstance = plainToInstance(dtoClass, dataToValidate);

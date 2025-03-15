@@ -1,3 +1,4 @@
+// Import necessary modules and classes
 import CreateChatUseCase from "../../features/Chat/application/CreateChatUseCase"
 import ChatRepository from "../../features/Chat/infrastructure/ChatRepository"
 import ChatController from "../../features/Chat/infrastructure/http/Chat.controller"
@@ -8,7 +9,7 @@ import { UpdatePhotoUseCase } from "../../features/Profiles/application/UpdatePh
 import UpdateProfileDataUseCase from "../../features/Profiles/application/UpdateProfileDataUseCase"
 import { ProfileController } from "../../features/Profiles/infrastructure/http/Profile.controller"
 import { ProfileRepository } from "../../features/Profiles/infrastructure/ProfileRepository"
-import GetUsersByCriteriaUseCase  from "../../features/Users/application/GetUserByCriteriaUseCase"
+import GetUsersByCriteriaUseCase from "../../features/Users/application/GetUserByCriteriaUseCase"
 import { RegisterUseCase } from "../../features/Auth/application/RegisterUserUseCase"
 import { UserController } from "../../features/Users/infrastructure/http/User.controller"
 import { UserRepository } from "../../features/Users/infrastructure/UserRepository"
@@ -21,34 +22,30 @@ import AuthController from "../../features/Auth/infrastructure/http/Login.contro
 import LoginUseCase from "../../features/Auth/application/LoginUseCase"
 import { JwtService } from "../security/jwt"
 import { GetUsersByPaginationUseCase } from "../../features/Users/application/GetUsersByPagination"
-
 import GetChatsUseCase from "../../features/Chat/application/GetChatUseCase"
 import GetChatsInfoUseCase from "../../features/Chat/application/GetChatsInfoUseCase"
 
-
-export const registerDependencies = () =>{
-
+// Function to register dependencies
+export const registerDependencies = () => {
 
     const userRepository = new UserRepository()
     const profileRepository = new ProfileRepository()
     const passwordHasher = new PasswordHasher()
     const registerUseCase = new RegisterUseCase(userRepository, passwordHasher)
     const getUserByCriteria = new GetUsersByCriteriaUseCase(userRepository)
-    
 
-    //Utilites
+    // Utilities
     container.register('ApiResponseFormatter', new ApiResponseFormatter())
     container.register('PasswordHasher', passwordHasher)
     container.register('JwtService', new JwtService())
 
-    //Repositories
+    // Repositories
     container.register('UserRepository', userRepository)
     container.register('ProfileRepository', profileRepository)
     container.register('ChatRepository', new ChatRepository())
-    container.register('MessageRepository', new MessageRepository( ))
+    container.register('MessageRepository', new MessageRepository())
 
-
-    //UseCases
+    // UseCases
     container.register('RegisterUseCase', registerUseCase)
     container.register('GetUserByCriteriaUseCase', getUserByCriteria)
     container.register('CreateProfileUseCase', new CreateProfileUseCase(profileRepository, userRepository))
@@ -60,18 +57,13 @@ export const registerDependencies = () =>{
     container.register('GetMessagesUseCase', new GetMessagesUseCase(
         container.resolve('MessageRepository')
     ))
-    
-
 
     container.register('CreateChatUseCase', new CreateChatUseCase(
         container.resolve('ChatRepository'),
-        container.resolve('UserRepository') 
+        container.resolve('UserRepository')
     ))
-    
     container.register('GetChatsUseCase', new GetChatsUseCase(container.resolve("ChatRepository")))
-
     container.register('GetChatsInfoUseCase', new GetChatsInfoUseCase(container.resolve("ChatRepository")))
-
     container.register('LoginUseCase', new LoginUseCase(
         container.resolve('UserRepository'),
         container.resolve('PasswordHasher'),
@@ -80,29 +72,22 @@ export const registerDependencies = () =>{
     container.register('GetUsersByCriteriaUseCase', new GetUsersByCriteriaUseCase(
         container.resolve('UserRepository'),
     ))
-
     container.register('GetUsersByPaginationUseCase', new GetUsersByPaginationUseCase(userRepository))
 
-
-    //----Controllers-----
-
-    //User
+    // Controllers
     container.register('UserController', new UserController(
         getUserByCriteria,
         container.resolve('GetUsersByPaginationUseCase'),
         container.resolve('ApiResponseFormatter')
     ))
 
-    //Profile
     container.register('ProfileController', new ProfileController(
         container.resolve('CreateProfileUseCase'),
         container.resolve('UpdatePhotoUseCase'),
         container.resolve('UpdateProfileDataUseCase'),
         container.resolve('ApiResponseFormatter')
-        
     ))
 
-    //Chat
     container.register('ChatController', new ChatController(
         container.resolve('CreateChatUseCase'),
         container.resolve('GetChatsUseCase'),
@@ -110,20 +95,18 @@ export const registerDependencies = () =>{
         container.resolve('ApiResponseFormatter'),
     ))
 
-    //Message
     container.register('MessageController', new MessageController(
         container.resolve('CreateMessageUseCase'),
         container.resolve('GetMessagesUseCase'),
         container.resolve('ApiResponseFormatter'),
-
     ))
 
-    //Auth
     container.register('AuthController', new AuthController(
-         container.resolve('RegisterUseCase'),
-         container.resolve('LoginUseCase'),
-         container.resolve('ApiResponseFormatter')
+        container.resolve('RegisterUseCase'),
+        container.resolve('LoginUseCase'),
+        container.resolve('ApiResponseFormatter')
     ))
 }
 
+// Register dependencies
 registerDependencies()

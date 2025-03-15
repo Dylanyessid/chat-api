@@ -1,7 +1,7 @@
-
 import { IApiResponseFormatter } from './IApiResponseFormatter';
 
-export class ApiResponseFormatter implements IApiResponseFormatter{
+// Class to format API responses
+export class ApiResponseFormatter implements IApiResponseFormatter {
     success<T>(data: T, message: string, status: number) {
         return {
             data,
@@ -16,5 +16,4 @@ export class ApiResponseFormatter implements IApiResponseFormatter{
             errors
         }
     }
-
 }
