@@ -7,8 +7,10 @@ import { CreateUserDTO } from "../dto/CreateUserDTO";
 
 class AuthController {
 
+    // Constructor to initialize use cases and response formatter
     constructor(private registerUseCase:RegisterUseCase ,private loginUseCase:LoginUseCase, private apiResponseFormatter:IApiResponseFormatter){}
 
+    // Method to handle user registration
     async create(req: Request, res: Response) {
             
             const createdUser = await this.registerUseCase.execute(req.body as CreateUserDTO)
@@ -23,6 +25,7 @@ class AuthController {
             return 
     }
 
+    // Method to handle user login
     async login(req:Request, res:Response){
         const result = await this.loginUseCase.execute(req.body)
        if (!result) {
@@ -40,4 +43,5 @@ class AuthController {
     }
 }
 
+// Export the controller
 export default AuthController
