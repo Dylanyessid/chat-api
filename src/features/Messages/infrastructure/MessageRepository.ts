@@ -3,8 +3,10 @@ import { IMessageRepository } from "../domain/IMessageRepository";
 import Message from "../domain/Message";
 import MessageModel from "./MessageSchema";
 
+// MessageRepository class to handle database operations for messages
 class MessageRepository implements IMessageRepository{
 
+    // Create a new message in the database
     async create(message: Message): Promise<Message | null> {
         try {
             const newMessage = new MessageModel()
@@ -21,6 +23,7 @@ class MessageRepository implements IMessageRepository{
         }
     }
 
+    // Count the total number of messages in a chat
     async countChatMessaes(chat:string){
         try {
             const total = await MessageModel.countDocuments({chat:new mongoose.Types.ObjectId(chat)})
@@ -30,9 +33,10 @@ class MessageRepository implements IMessageRepository{
         }
        
     }
+
+    // Get paginated messages from a chat
     async getMessages(page: number, limit: number, chat:string): Promise<Message[] | null> {
         try {
-            
             const skip = (page - 1) * limit
             const messages = await MessageModel.find({
                 chat: new mongoose.Types.ObjectId(chat)
@@ -43,14 +47,14 @@ class MessageRepository implements IMessageRepository{
             .lean()
             .exec()
 
-            
-           
-            return messages.map((message)=> Message.create(message.chat.toString(), message.sender.toString(), message.type, message.content, message.createdAt))
+            return messages.map((message)=> Message.createWithId(message._id.toString() ,message.chat.toString(), message.sender.toString(), message.type, message.content, message.createdAt))
 
         } catch (error) {
             return null
         }
     }
+
+    // Soft delete a message by setting the deletedAt timestamp
     async delete(id: string) {
         try {
             const message = await MessageModel.findByIdAndUpdate(id, {

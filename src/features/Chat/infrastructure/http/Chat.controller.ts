@@ -4,6 +4,7 @@ import { IApiResponseFormatter } from "../../../../infrastructure/formatters/IAp
 import GetChatsUseCase from "../../application/GetChatUseCase";
 import { formatPaginatedData } from "../../../../infrastructure/formatters/PaginationResponseFormatter";
 import GetChatsInfoUseCase from "../../application/GetChatsInfoUseCase";
+import { AuthRequest } from "../../../../infrastructure/http/httpInterfaces";
 
 class ChatController {
 
@@ -50,8 +51,9 @@ class ChatController {
     }
 
     async getChatInfo(req:Request, res:Response){
+      const user =  (req as AuthRequest).user as any
       const {ids} = req.query
-      const result = await this.getChatInfoUseCase.execute(ids as string[])
+      const result = await this.getChatInfoUseCase.execute(ids as string[], user.id)
       if (!result) {
         const response = this.apiResponseFormatter.error("Not found", 404);
         res.status(404).json(response);

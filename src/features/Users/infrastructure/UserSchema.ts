@@ -4,7 +4,7 @@ import  mongoosePaginate  from 'mongoose-paginate-v2';
 import { IProfileDocument } from "../../Profiles/infrastructure/ProfileSchema";
 
 export interface IUserDocument {
-   
+    _id:string
     email: string,
     profile: mongoose.Types.ObjectId | IProfileDocument
     password: string,

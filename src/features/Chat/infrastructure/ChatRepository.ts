@@ -80,6 +80,7 @@ class ChatRepository implements IChatReposiory {
             //const ids = chats.map((id)=>new mongoose.Types.ObjectId(id))
             const chatDocuments = await ChatModel.find({_id: {$in: chats}}).populate(
                 {path: "participants",
+                    
                     populate: {
                       path: "profile",
                     }}
@@ -88,10 +89,10 @@ class ChatRepository implements IChatReposiory {
             
             return chatDocuments.map((chat)=>{
                 const participants = chat.participants as IUserDocument[]
-                const usersConverted  = participants.map((user)=>{
-                    const {username, fullName, photo} = user.profile as IProfileDocument
+                const usersConverted  = participants.map((user:IUserDocument)=>{
+                    const {username, fullName, photo, _id} = user.profile as IProfileDocument
                     const userProfile = Profile.create(username, fullName,photo )
-                    return User.create(user.email, "", userProfile)
+                    return User.createWithId(user._id.toString(),user.email, "", userProfile)
                 })
                
                return Chat.createWithId( chat._id.toString(),usersConverted)
