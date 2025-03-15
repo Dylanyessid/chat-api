@@ -13,11 +13,13 @@ This project is a Node.js-based chat API that allows users to send and receive m
 
 - Node.js
 - pnpm
-
+- A MongoDB instance
+- A cloudinary account
 
 ## Configuration
 
 1. Create a `.env` file in the root directory and add the following environment variables:
+
     ```env
     PORT=3000
     MONGO_URI=your_database_url
@@ -27,6 +29,18 @@ This project is a Node.js-based chat API that allows users to send and receive m
     CLOUDINARY_API_KEY=your_cloudinary_api_key
     CLOUDINARY_API_SECRET=your_cloudinary_api_secret
     ```
+
+## Technical decisions
+
+TypeScript was used because of its static typing and interfaces, which facilitates the implementation of Clean Architecture. TypeScript helps to detect errors at development time and improves code maintainability.
+
+MongoDB was chosen for its flexibility and simplicity in building schemas using a JSON-like format.
+
+Multer was used for file upload over HTTP. It is a middleware for Express that handles file upload on the server.
+
+Cloudinary was used to host the files uploaded via Multer. Cloudinary offers a substantial free layer.
+
+Express.js was chosen to create the project architecture from a minimalist approach.
 
 ## Running the Application
 
@@ -46,12 +60,6 @@ This project is a Node.js-based chat API that allows users to send and receive m
     ```
 
 6. The API will be available at `http://localhost:3000`.
-
-## API Endpoints
-
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login a user
-- `GET /api/messages` - Get message history
 
 ## License
 
